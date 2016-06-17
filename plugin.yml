@@ -1,0 +1,5 @@
+name: ItemFrameClicker
+main: me.Phil14052.ItemFrameClicker.ItemFrameClicker
+version: 0.1
+author: phil14052
+description: Adds the ability to make clickable item frames

@@ -5,17 +5,23 @@ import java.util.UUID;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 
-public class IItemFrame {
+public class ClickableItemFrame {
 
 	
 	private UUID id = UUID.randomUUID();
 	private Location loc;
 	private int amount = 1;
 	
-	public IItemFrame(Location loc, int amount){
+	public ClickableItemFrame(Location loc, int amount){
 		Validate.notNull(loc);
 		this.setLoc(loc);
 		this.setAmount(amount);
+	}
+	public ClickableItemFrame(Location loc, int amount, UUID id){
+		Validate.notNull(loc);
+		this.setLoc(loc);
+		this.setAmount(amount);
+		this.setId(id);
 	}
 
 	public int getAmount() {

@@ -1,7 +1,9 @@
 package me.Phil14052.ItemFrameClicker.Managers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.Phil14052.ItemFrameClicker.ItemFrameClicker;
 import me.Phil14052.ItemFrameClicker.Instances.ClickableItemFrame;
@@ -18,6 +20,7 @@ public class ItemFrameManager {
 	private List<ClickableItemFrame> itemframes;
 	private List<Player> creating;
 	private List<Player> destorying;
+	private Map<Player, Integer> settingCooldown;
 	private ItemFrameClicker plugin;
 	private DataManager dm;
 	private ItemFrameManager(){
@@ -26,6 +29,7 @@ public class ItemFrameManager {
 		this.setItemframes(new ArrayList<ClickableItemFrame>());
 		this.creating = new ArrayList<Player>();
 		this.destorying = new ArrayList<Player>();
+		this.setSettingCooldown(new HashMap<Player, Integer>());
 	}
 	public static ItemFrameManager getInstance() {
 		if (instance == null) instance = new ItemFrameManager();
@@ -80,9 +84,14 @@ public class ItemFrameManager {
 		ClickableItemFrame itemframei = this.getItemFrameInstance(loc);
 		int amount = itemframei.getAmount();
 		ItemStack item = itemframe.getItem();
-		for(int i = 0; i<amount; i++){
-			p.getInventory().addItem(item);
+		int backupAmount = item.getAmount();
+		if(plugin.getConfig().getBoolean("Multiple-Items")){
+			item.setAmount(amount);
+		}else{
+			item.setAmount(1);
 		}
+		p.getInventory().addItem(item);
+		item.setAmount(backupAmount);
 	}
 	
 	public void createFrame(Player p, ItemFrame frame, Location loc){
@@ -118,8 +127,18 @@ public class ItemFrameManager {
 		dm.removeItemFrame(cif);
 		return;
 	}
+	public Map<Player, Integer> getSettingCooldown() {
+		return settingCooldown;
+	}
+	public void setSettingCooldown(Map<Player, Integer> settingCooldown) {
+		this.settingCooldown = settingCooldown;
+	}
 	
 	
-	
+	public void saveItemFrames(){
+		for(ClickableItemFrame cif : this.getItemframes()){
+			dm.saveItemFrame(cif);
+		}
+	}
 	
 }

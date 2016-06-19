@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import me.Phil14052.ItemFrameClicker.Data.ConfigFileUpdater;
 import me.Phil14052.ItemFrameClicker.Data.DataFileUpdater;
+import me.Phil14052.ItemFrameClicker.Data.Files;
+import me.Phil14052.ItemFrameClicker.Data.LangFileUpdater;
 import me.Phil14052.ItemFrameClicker.Listeners.EntityEvents;
 import me.Phil14052.ItemFrameClicker.Listeners.OnInteractEvent;
+import me.Phil14052.ItemFrameClicker.Managers.CooldownManager;
 import me.Phil14052.ItemFrameClicker.Managers.ItemFrameManager;
 
 import org.bukkit.Bukkit;
@@ -18,11 +22,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ItemFrameClicker extends JavaPlugin{
 	private static ItemFrameClicker plugin;
 	private FileConfiguration dataConfig;
+	public Files lang;
 	private File dataConfigFile;
 	private ItemFrameManager ifm;
+	private CooldownManager cm;
+	
 	@Override
 	public void onEnable(){
 		plugin = this;
+		new ConfigFileUpdater(plugin);
 		ifm = ItemFrameManager.getInstance();
 		registerEvents();
 		registerCommands();
@@ -30,11 +38,23 @@ public class ItemFrameClicker extends JavaPlugin{
 		dataConfigFile = null;
 		new DataFileUpdater(plugin);
 		ifm.loadItemFrames();
+		lang = new Files(this, "lang.yml");
+		new LangFileUpdater(plugin);
+		Lang.setFile(lang);
+		cm = CooldownManager.getInstance();
+		cm.continueCooldowns();
+		if(!this.getConfig().getBoolean("Enabled")){
+			Bukkit.getConsoleSender().sendMessage("§cDisabling plugin.");
+			Bukkit.getPluginManager().disablePlugin(plugin);
+		}
 	}
 
 	@Override
 	public void onDisable(){
+		ifm.saveItemFrames();
 		plugin = null;
+		ifm = null;
+		return;
 	}
 	
 	private void registerEvents() {

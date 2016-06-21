@@ -66,6 +66,12 @@ public class DataManager {
 		return list;
 		
 	}
+	
+	public void updateCooldowns(ClickableItemFrame cif){
+		List<String> cooldowns = serializeCooldownList(cif.getCooldowns());
+		plugin.getDataConfig().set("itemframes." + cif.getId().toString() + ".cooldowns" , cooldowns);
+	}
+	
 	public void saveItemFrame(ClickableItemFrame cif){
 		String suuid = cif.getId().toString();
 		String loc = this.serializeLocation(cif.getLoc());

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.Phil14052.ItemFrameClicker.ItemFrameClicker;
+import me.Phil14052.ItemFrameClicker.Lang;
 import me.Phil14052.ItemFrameClicker.Instances.ClickableItemFrame;
 
 import org.bukkit.Location;
@@ -92,6 +93,11 @@ public class ItemFrameManager {
 		}
 		p.getInventory().addItem(item);
 		item.setAmount(backupAmount);
+		String display = item.getType().name().toLowerCase().replaceAll("_", " ");
+		if(item.hasItemMeta() && item.getItemMeta().hasDisplayName()){
+			display = "§r"+item.getItemMeta().getDisplayName();
+		}
+		p.sendMessage(Lang.GAVE_ITEM.toString().replaceAll("%amount%", String.valueOf(amount)).replaceAll("%item_display_name%", display));
 	}
 	
 	public void createFrame(Player p, ItemFrame frame, Location loc){

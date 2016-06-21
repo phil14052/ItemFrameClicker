@@ -72,8 +72,9 @@ public class OnInteractEvent implements Listener{
 					message = message.replaceAll("%seconds%", String.valueOf(seconds));
 					p.sendMessage(message);
 					return;
+				}else if(cif.getCooldownInSec() != 0){
+					cm.createCooldown(p, cif);
 				}
-				cm.createCooldown(p, cif);
 				ifm.giveItems(p, itemframe, loc);
 			}
 			

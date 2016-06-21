@@ -43,6 +43,7 @@ public class ItemFrameClicker extends JavaPlugin{
 		Lang.setFile(lang);
 		cm = CooldownManager.getInstance();
 		cm.continueCooldowns();
+		cm.startAutoSaveCooldowns();
 		if(!this.getConfig().getBoolean("Enabled")){
 			Bukkit.getConsoleSender().sendMessage("§cDisabling plugin.");
 			Bukkit.getPluginManager().disablePlugin(plugin);
@@ -51,7 +52,7 @@ public class ItemFrameClicker extends JavaPlugin{
 
 	@Override
 	public void onDisable(){
-		ifm.saveItemFrames();
+		cm.stopAutoSaveCooldowns();
 		plugin = null;
 		ifm = null;
 		return;
@@ -75,7 +76,8 @@ public class ItemFrameClicker extends JavaPlugin{
 			
 		}
 	}
-	 //Return the arena config
+	
+	//Return the arena config
     public FileConfiguration getDataConfig() {
  
         if(this.dataConfigFile == null) this.reloadDataConfig();
@@ -92,7 +94,7 @@ public class ItemFrameClicker extends JavaPlugin{
         try {
             this.getDataConfig().save(this.dataConfigFile);
         } catch (IOException ex) {
-            plugin.getServer().getLogger().log(Level.SEVERE, "Could not save teams config to " + this.dataConfigFile +"!", ex);
+            plugin.getServer().getLogger().log(Level.SEVERE, "Could not save data config to " + this.dataConfigFile +"!", ex);
         }
  
     }

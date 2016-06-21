@@ -32,7 +32,15 @@ public enum Lang {
     CREATED_ITEM_FRAME("created_item_frame", "%prefix% &aSuccesfully created clickable item frame"),
     FAILED_ITEM_FRAME_IN_USE("failed.already_in_use", "%failed% Item frame is already in use."),
     SET_COOLDOWN("set_cooldown", "%prefix% Set cooldown to &3&l%x%"),
-    NEED_TO_COOLDOWN("need_to_cooldown", "&cYou need to wait &3%hours%&c hour/s, &3%minutes%&c minute/s and &3%seconds%&c second/s.");
+    NEED_TO_COOLDOWN("need_to_cooldown", "&cYou need to wait &3%hours%&c hour/s, &3%minutes%&c minute/s and &3%seconds%&c second/s."),
+    SEND_HELP("help", "ARRAYLIST: &8&l&m--------------------- ,   , &3ItemFrameClicker - Commands:"
+    		+ " , &3/ifc create - Creates a new clickable item frame"
+    		+ " , &3/ifc remove - Removes a clickable item frame"
+    		+ " , &3/ifc cooldown (time in seconds) - Sets a cooldown on an item frame."
+    		+ " ,  "
+    		+ " , &8&l&m---------------------"),
+    UNKNWON_ARGUMENT("unknown_argument", "&a%arg% &cis not a valid argument."),
+    GAVE_ITEM("gave_item", "%prefix% You just got %amount% %item_display_name%");
     
     
     
@@ -72,6 +80,11 @@ public enum Lang {
     	List<String> s = LANG.getStringList(this.path);
     	List<String> colored_s = new ArrayList<String>();
     	for(String string : s){
+    		
+        	string = string.replaceAll("%prefix%", LANG.getString(PREFIX.getPath()));
+        	string = string.replaceAll("%usage_prefix%", LANG.getString(USAGE_PREFIX.getPath()));
+        	string = string.replaceAll("%failed_prefix%", LANG.getString(FAILED_PREFIX.getPath()));
+        	string = string.replaceAll("%info_prefix%", LANG.getString(INFO_PREFIX.getPath()));
     		colored_s.add(ChatColor.translateAlternateColorCodes('&', string));
     	}
     	return colored_s;

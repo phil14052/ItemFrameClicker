@@ -7,6 +7,7 @@ import me.Phil14052.ItemFrameClicker.Instances.ClickableItemFrame;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class CooldownManager {
 
@@ -14,6 +15,7 @@ public class CooldownManager {
 	private ItemFrameClicker plugin;
 	private ItemFrameManager ifm;
 	private DataManager dm;
+	private BukkitTask autosave;
 	private CooldownManager(){
 		this.plugin = ItemFrameClicker.getInstance();
 		ifm = ItemFrameManager.getInstance();
@@ -41,8 +43,10 @@ public class CooldownManager {
 				if(i == 0){
 					cif.removeFromCoolDown(id);
 					this.cancel();
+					dm.saveItemFrame(cif);
+				}else{
+					dm.updateCooldowns(cif);	
 				}
-				dm.saveItemFrame(cif);
 			}
 			
 		}.runTaskTimer(plugin, 20, 20);
@@ -60,8 +64,10 @@ public class CooldownManager {
 						if(i == 0){
 							cif.removeFromCoolDown(p);
 							this.cancel();
+							dm.saveItemFrame(cif);
+						}else{
+							dm.updateCooldowns(cif);
 						}
-						dm.saveItemFrame(cif);
 					}
 					
 				}.runTaskTimer(plugin, 20, 20);
@@ -69,5 +75,19 @@ public class CooldownManager {
 		}
 	}
 	
+	public void startAutoSaveCooldowns(){
+		autosave = new BukkitRunnable(){
+
+			@Override
+			public void run() {
+				ifm.saveItemFrames();
+			}
+			
+		}.runTaskTimerAsynchronously(plugin, 20*45, 20*45);
+	}
+	
+	public void stopAutoSaveCooldowns(){
+		this.autosave.cancel();
+	}
 	
 }

@@ -15,7 +15,9 @@ public class MainCommand implements CommandExecutor{
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!cmd.getName().equalsIgnoreCase("ifc")) return true;
 		if(args.length < 1){
-			sender.sendMessage("SEND HELP!");
+			for(String s : Lang.SEND_HELP.toStringList()){
+				sender.sendMessage(s);
+			}
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("create")){
@@ -64,6 +66,7 @@ public class MainCommand implements CommandExecutor{
 			sender.sendMessage(Lang.RELOAD_SUCCES.toString());
 			return true;
 		}else{
+			sender.sendMessage(Lang.UNKNWON_ARGUMENT.toString().replaceAll("%arg%", args[0]));
 			return false;
 		}
 		   

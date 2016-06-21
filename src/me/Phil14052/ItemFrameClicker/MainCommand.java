@@ -56,7 +56,10 @@ public class MainCommand implements CommandExecutor{
 			catch(NumberFormatException nfe){  
 				p.sendMessage(Lang.FAILED_NOT_A_NUMBER.toString().replaceAll("%x%", args[1]));
 				return false;  
-			}  
+			}
+			if(i < 0){
+				i = 0;
+			}
 			ifm.getSettingCooldown().put(p, i);
 			p.sendMessage(Lang.GIVE_COOLDOWN.toString());
 			return true;

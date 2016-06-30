@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.Phil14052.ItemFrameClicker.ItemFrameClicker;
-import me.Phil14052.ItemFrameClicker.Lang;
-import me.Phil14052.ItemFrameClicker.Instances.ClickableItemFrame;
-
 import org.bukkit.Location;
 import org.bukkit.Rotation;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import me.Phil14052.ItemFrameClicker.ItemFrameClicker;
+import me.Phil14052.ItemFrameClicker.Lang;
+import me.Phil14052.ItemFrameClicker.Instances.ClickableItemFrame;
 
 public class ItemFrameManager {
 	
@@ -22,6 +22,7 @@ public class ItemFrameManager {
 	private List<Player> creating;
 	private List<Player> destorying;
 	private Map<Player, Integer> settingCooldown;
+	private Map<Player, ClickableItemFrame> editingGUI;
 	private ItemFrameClicker plugin;
 	private DataManager dm;
 	private ItemFrameManager(){
@@ -31,6 +32,7 @@ public class ItemFrameManager {
 		this.creating = new ArrayList<Player>();
 		this.destorying = new ArrayList<Player>();
 		this.setSettingCooldown(new HashMap<Player, Integer>());
+		this.setEditingGUI(new HashMap<Player, ClickableItemFrame>());
 	}
 	public static ItemFrameManager getInstance() {
 		if (instance == null) instance = new ItemFrameManager();
@@ -95,7 +97,7 @@ public class ItemFrameManager {
 		item.setAmount(backupAmount);
 		String display = item.getType().name().toLowerCase().replaceAll("_", " ");
 		if(item.hasItemMeta() && item.getItemMeta().hasDisplayName()){
-			display = "§r"+item.getItemMeta().getDisplayName();
+			display = "Â§r"+item.getItemMeta().getDisplayName();
 		}
 		p.sendMessage(Lang.GAVE_ITEM.toString().replaceAll("%amount%", String.valueOf(amount)).replaceAll("%item_display_name%", display));
 	}
@@ -145,6 +147,12 @@ public class ItemFrameManager {
 		for(ClickableItemFrame cif : this.getItemframes()){
 			dm.saveItemFrame(cif);
 		}
+	}
+	public Map<Player, ClickableItemFrame> getEditingGUI() {
+		return editingGUI;
+	}
+	public void setEditingGUI(Map<Player, ClickableItemFrame> editingGUI) {
+		this.editingGUI = editingGUI;
 	}
 	
 }

@@ -3,10 +3,12 @@ package me.Phil14052.ItemFrameClicker.Listeners;
 import java.util.concurrent.TimeUnit;
 
 import me.Phil14052.ItemFrameClicker.Lang;
+import me.Phil14052.ItemFrameClicker.GUIs.MenuGUI;
 import me.Phil14052.ItemFrameClicker.Instances.ClickableItemFrame;
 import me.Phil14052.ItemFrameClicker.Managers.CooldownManager;
 import me.Phil14052.ItemFrameClicker.Managers.DataManager;
 import me.Phil14052.ItemFrameClicker.Managers.ItemFrameManager;
+import me.Phil14052.ItemFrameClicker.Managers.PermissionManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,9 +34,9 @@ public class OnInteractEvent implements Listener{
 		boolean isValid = ifm.validItemFrame(itemframe);
 		if(isValid){
 			if(itemframe.getItem().getType() == Material.AIR){
-				Bukkit.getConsoleSender().sendMessage("§8[§4WARNING§8] §cClickableItemFrame at " + dm.serializeLocation(loc) + " found without item.");
+				Bukkit.getConsoleSender().sendMessage("Â§8[Â§4WARNINGÂ§8] Â§cClickableItemFrame at " + dm.serializeLocation(loc) + " found without item.");
 				ifm.removeItemFrame(itemframe.getLocation());
-				Bukkit.getConsoleSender().sendMessage("§8[§bINFO§8] §aRemoved ClickableItemFrame at " + dm.serializeLocation(loc) + " from config.");
+				Bukkit.getConsoleSender().sendMessage("Â§8[Â§bINFOÂ§8] Â§aRemoved ClickableItemFrame at " + dm.serializeLocation(loc) + " from config.");
 				if(ifm.isCreatingFrame(p)){
 					e.setCancelled(true);
 					if(p.getItemInHand().getType() == Material.AIR){
@@ -58,6 +60,13 @@ public class OnInteractEvent implements Listener{
 					dm.saveItemFrame(cif);
 					p.sendMessage(Lang.SET_COOLDOWN.toString().replaceAll("%x%", String.valueOf(i)));
 					ifm.getSettingCooldown().remove(p);
+					return;
+				}else if(p.isSneaking()){
+					if(!PermissionManager.hasPermission(p, "itemframeclicker.openmenu", false)) return;
+					ClickableItemFrame cif = ifm.getItemFrameInstance(loc);
+					ifm.getEditingGUI().put(p, cif);
+					MenuGUI menu = new MenuGUI();
+					menu.openInventory(p);
 					return;
 				}
 				ClickableItemFrame cif = ifm.getItemFrameInstance(loc);

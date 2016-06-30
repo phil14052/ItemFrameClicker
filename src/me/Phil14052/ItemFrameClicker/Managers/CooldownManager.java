@@ -2,12 +2,12 @@ package me.Phil14052.ItemFrameClicker.Managers;
 
 import java.util.UUID;
 
-import me.Phil14052.ItemFrameClicker.ItemFrameClicker;
-import me.Phil14052.ItemFrameClicker.Instances.ClickableItemFrame;
-
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+
+import me.Phil14052.ItemFrameClicker.ItemFrameClicker;
+import me.Phil14052.ItemFrameClicker.Instances.ClickableItemFrame;
 
 public class CooldownManager {
 
@@ -15,7 +15,7 @@ public class CooldownManager {
 	private ItemFrameClicker plugin;
 	private ItemFrameManager ifm;
 	private DataManager dm;
-	private BukkitTask autosave;
+	private BukkitTask autosave = null;
 	private CooldownManager(){
 		this.plugin = ItemFrameClicker.getInstance();
 		ifm = ItemFrameManager.getInstance();
@@ -87,6 +87,7 @@ public class CooldownManager {
 	}
 	
 	public void stopAutoSaveCooldowns(){
+		if(autosave == null) return;
 		this.autosave.cancel();
 	}
 	

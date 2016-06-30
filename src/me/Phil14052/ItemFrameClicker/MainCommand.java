@@ -1,6 +1,7 @@
 package me.Phil14052.ItemFrameClicker;
 
 import me.Phil14052.ItemFrameClicker.Managers.ItemFrameManager;
+import me.Phil14052.ItemFrameClicker.Managers.PermissionManager;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,6 +22,7 @@ public class MainCommand implements CommandExecutor{
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("create")){
+			if(!PermissionManager.hasPermission(sender, "itemframeclicker.create", true)) return false;
 			if(!(sender instanceof Player)){
 				sender.sendMessage(Lang.PLAYERS_ONLY.toString());
 				return false;
@@ -30,6 +32,7 @@ public class MainCommand implements CommandExecutor{
 			p.sendMessage(Lang.PUT_ITEM_FRAME.toString());
 			return true;
 		}else if(args[0].equalsIgnoreCase("remove")){
+			if(!PermissionManager.hasPermission(sender, "itemframeclicker.remove", true)) return false;
 			if(!(sender instanceof Player)){
 				sender.sendMessage(Lang.PLAYERS_ONLY.toString());
 				return false;
@@ -39,6 +42,7 @@ public class MainCommand implements CommandExecutor{
 			p.sendMessage(Lang.REMOVE_ITEM_FRAME.toString());
 			return true;
 		}else if(args[0].equalsIgnoreCase("cooldown")){
+			if(!PermissionManager.hasPermission(sender, "itemframeclicker.cooldown", true)) return false;
 			if(!(sender instanceof Player)){
 				sender.sendMessage(Lang.PLAYERS_ONLY.toString());
 				return false;
@@ -64,6 +68,7 @@ public class MainCommand implements CommandExecutor{
 			p.sendMessage(Lang.GIVE_COOLDOWN.toString());
 			return true;
 		}else if(args[0].equalsIgnoreCase("reload")){
+			if(!PermissionManager.hasPermission(sender, "itemframeclicker.reload", true)) return false;
 			plugin.reloadConfig();
 			plugin.saveConfig();
 			sender.sendMessage(Lang.RELOAD_SUCCES.toString());

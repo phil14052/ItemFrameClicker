@@ -4,20 +4,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import me.Phil14052.ItemFrameClicker.Data.ConfigFileUpdater;
-import me.Phil14052.ItemFrameClicker.Data.DataFileUpdater;
-import me.Phil14052.ItemFrameClicker.Data.Files;
-import me.Phil14052.ItemFrameClicker.Data.LangFileUpdater;
-import me.Phil14052.ItemFrameClicker.Listeners.EntityEvents;
-import me.Phil14052.ItemFrameClicker.Listeners.OnInteractEvent;
-import me.Phil14052.ItemFrameClicker.Managers.CooldownManager;
-import me.Phil14052.ItemFrameClicker.Managers.ItemFrameManager;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import me.Phil14052.ItemFrameClicker.Data.ConfigFileUpdater;
+import me.Phil14052.ItemFrameClicker.Data.DataFileUpdater;
+import me.Phil14052.ItemFrameClicker.Data.Files;
+import me.Phil14052.ItemFrameClicker.Data.LangFileUpdater;
+import me.Phil14052.ItemFrameClicker.Listeners.EntityEvents;
+import me.Phil14052.ItemFrameClicker.Listeners.InventoryEvents;
+import me.Phil14052.ItemFrameClicker.Listeners.OnInteractEvent;
+import me.Phil14052.ItemFrameClicker.Managers.CooldownManager;
+import me.Phil14052.ItemFrameClicker.Managers.ItemFrameManager;
 
 public class ItemFrameClicker extends JavaPlugin{
 	private static ItemFrameClicker plugin;
@@ -45,7 +46,7 @@ public class ItemFrameClicker extends JavaPlugin{
 		cm.continueCooldowns();
 		cm.startAutoSaveCooldowns();
 		if(!this.getConfig().getBoolean("Enabled")){
-			Bukkit.getConsoleSender().sendMessage("§cDisabling plugin.");
+			Bukkit.getConsoleSender().sendMessage("Â§cDisabling plugin.");
 			Bukkit.getPluginManager().disablePlugin(plugin);
 		}
 	}
@@ -62,6 +63,7 @@ public class ItemFrameClicker extends JavaPlugin{
 	    PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new OnInteractEvent(), this);
 		pm.registerEvents(new EntityEvents(), this);
+		pm.registerEvents(new InventoryEvents(), this);
 	}
 	
 	private void registerCommands() {
@@ -69,7 +71,7 @@ public class ItemFrameClicker extends JavaPlugin{
 	}
 	
 	
-	public void reloadDataConfig(){
+	private void reloadDataConfig(){
 		if(this.dataConfigFile == null){
 			this.dataConfigFile = new File(new File(plugin.getDataFolder(), "Data"),"data.yml");
 			this.dataConfig = YamlConfiguration.loadConfiguration(this.dataConfigFile);

@@ -35,8 +35,9 @@ public class DataManager {
 	}
 	
 	public Location deserializeLocation(String string){
+		if(string == null) return null;
 		String[] sloc = string.split("_");
-		if(sloc[0] == null || sloc[1] == null || sloc[2] == null || sloc[3] == null) return null;
+		if(sloc == null || sloc[0] == null || sloc[1] == null || sloc[2] == null || sloc[3] == null) return null;
 		World world = Bukkit.getWorld(sloc[0]);
 		Double x = Double.parseDouble(sloc[1]);
 		Double y = Double.parseDouble(sloc[2]);
@@ -92,9 +93,21 @@ public class DataManager {
 		plugin.saveDataConfig();
 		return;
 	}
+	
+	public void removeItemFrame(String suuid){
+		plugin.getDataConfig().set("itemframes." + suuid, null);
+		plugin.saveDataConfig();
+		return;
+	}
+	
 	public ClickableItemFrame getItemFrame(String suuid){
 		UUID uuid = UUID.fromString(suuid);
 		String sloc = plugin.getDataConfig().getString("itemframes." + suuid + ".loc");
+		if(this.deserializeLocation(sloc) == null){
+			this.removeItemFrame(suuid);
+			
+			return null;
+		}
 		Location loc = this.deserializeLocation(sloc);
 		int amount = plugin.getDataConfig().getInt("itemframes." + suuid + ".amount");
 		int cooldown = plugin.getDataConfig().getInt("itemframes." + suuid + ".cooldown");

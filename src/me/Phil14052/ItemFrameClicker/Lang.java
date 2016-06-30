@@ -40,7 +40,8 @@ public enum Lang {
     		+ " ,  "
     		+ " , &8&l&m---------------------"),
     UNKNWON_ARGUMENT("unknown_argument", "&a%arg% &cis not a valid argument."),
-    GAVE_ITEM("gave_item", "%prefix% You just got %amount% %item_display_name%");
+    GAVE_ITEM("gave_item", "%prefix% You just got %amount% %item_display_name%"),
+    NO_PERMISSION("no_permission", "%prefix% &cYou do not have permission.");
     
     
     
